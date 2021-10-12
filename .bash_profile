@@ -47,11 +47,11 @@ if [ "$force_color_prompt" = yes ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1="${debian_chroot:+($debian_chroot)}\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[36m\]$(parse_git_branch)\[\033[00m\]\n\$ "
+    PS1="${debian_chroot:+($debian_chroot)}\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[36m\]\$(parse_git_branch)\[\033[00m\]\n\$ "
     # PS1='${debian_chroot:+($debian_chroot)}\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[36m\]`__git_ps1`\[\033[00m\]\n\$ '
     # PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[32m\]\u@\h \[\033[35m\]$MSYSTEM \[\033[33m\]\w\[\033[36m\]`__git_ps1`\[\033[00m\]\n$'
 else
-    PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)\n\$ "
+    PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$(parse_git_branch)\n\$ "
 fi
 
 case "$TERM" in
