@@ -22,7 +22,7 @@ bind '"\e[B": history-search-forward'
 # Prompt
 # -------
 
-#force_color_prompt=yes
+force_color_prompt=yes
 
 parse_git_branch() {
   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
@@ -86,6 +86,12 @@ export NVM_DIR="$HOME/.nvm"
 function mkcd()
 {
   mkdir $1 && cd $1
+}
+
+function updatedotfiles()
+{
+  git -C ~/dotfiles pull -q
+  source ~/dotfiles/config.sh
 }
 
 # -------
