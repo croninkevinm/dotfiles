@@ -1,9 +1,22 @@
-
-if [[ $(grep microsoft /proc/version) ]]; then
-  sys_type=wsl
-elif [ "$(uname)" == "Darwin" ]; then
+if [ "$(uname)" == "Darwin" ]; then
+  # Do something under Mac OS X platform
   sys_type=mac
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+  if [[ $(grep microsoft /proc/version) ]]; then
+    # Do something under WSL/Linux platform
+    sys_type=wsl
+  else
+    # Do something under GNU/Linux platform
+    sys_type=gnu
+  fi
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+  # Do something under 32 bits Windows NT platform
+  sys_type=win
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+  # Do something under 64 bits Windows NT platform
+  sys_type=win
 fi
+
 
 shopt -s autocd
 shopt -s histappend
@@ -47,11 +60,17 @@ if [ "$force_color_prompt" = yes ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
+  if [ "$sys_type" = win ]; then
+    PS1="${debian_chroot:+($debian_chroot)}\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[36m\]$(parse_git_branch)\[\033[00m\]\n\$ "
+  else
     PS1="${debian_chroot:+($debian_chroot)}\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[36m\]\$(parse_git_branch)\[\033[00m\]\n\$ "
-    # PS1='${debian_chroot:+($debian_chroot)}\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[36m\]`__git_ps1`\[\033[00m\]\n\$ '
-    # PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[32m\]\u@\h \[\033[35m\]$MSYSTEM \[\033[33m\]\w\[\033[36m\]`__git_ps1`\[\033[00m\]\n$'
+  fi
 else
+  if [ "$sys_type" = win ]; then
+    PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)\n\$ "
+  else
     PS1="${debian_chroot:+($debian_chroot)}\u@\h:\w\$(parse_git_branch)\n\$ "
+  fi
 fi
 
 case "$TERM" in
