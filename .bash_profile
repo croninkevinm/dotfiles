@@ -1,19 +1,16 @@
-if [ "$(uname)" == "Darwin" ]; then
-  # Do something under Mac OS X platform
+if [ "$(uname)" == "Darwin" ]; then # Do something under Mac OS X platform
   sys_type=mac
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
-  if [[ $(grep microsoft /proc/version) ]]; then
-    # Do something under WSL/Linux platform
+  if [[ $(grep microsoft /proc/version) ]]; then # Do something under WSL/Linux platform
     sys_type=wsl
-  else
-    # Do something under GNU/Linux platform
+    PATH=$PATH:/mnt/c/Windows
+  else # Do something under GNU/Linux platform
     sys_type=gnu
   fi
-elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
-  # Do something under 32 bits Windows NT platform
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then # Do something under 32 bits Windows NT platform
+  
   sys_type=win
-elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-  # Do something under 64 bits Windows NT platform
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then # Do something under 64 bits Windows NT platform
   sys_type=win
 fi
 
@@ -110,7 +107,7 @@ function mkcd()
 function updatedotfiles()
 {
   git -C ~/dotfiles pull -q
-  source ~/dotfiles/config.sh
+  ~/dotfiles/config.sh
 }
 
 # -------
@@ -136,10 +133,8 @@ alias nr='npm run'
 alias run='npm run'
 
 if [ "$sys_type" = wsl ]; then
-  alias open="explorer.exe ."
+  alias open="explorer.exe"
   alias winpath='wslpath -aw $PWD'
-elif [ "$sys_type" = mac ]; then
-  alias open="open ."
 fi
 
 # ----------------------

@@ -10,4 +10,3 @@ do
   fi
   ln -s ~/dotfiles/$(echo $dotfile) ~/$(echo $dotfile)
 done
-source ~/.bash_profile
